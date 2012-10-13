@@ -1,0 +1,60 @@
+root@lingd-arm2410s:/tmp/basic/pc_gprs# ./gprs
+  Default baudratport->uartclk = 50700000, baud = 9600, quot = 329
+config: 8bits/char
+port->uartclk = 50700000, baud = 9600, quot = 329
+config: 8bits/char
+e is 9600 bps. If not, please enter the baudrate as a parameter
+
+read modem
+at
+
+
+OK
+
+ate1
+
+
+OK
+
+at+chfa=1
+
+
+SWITCHED AUX AUDIO
+
+
+
+OK
+
+at+clvl=100
+
+
+OK
+
+at+cmic=1,10
+
+
+OK
+
+
+<gprs control shell>
+ [1]  give a call
+ [2]  respond a call
+ [3]  hold a call
+ [4]  send a msg
+ [5]  exit
+ [*] help menu
+keyshell> 1
+1
+
+you select to gvie a call, please input number:10086
+atd10086;
+
+
+OK
+
+
+
+NO CARRIER
+
+
+calling......

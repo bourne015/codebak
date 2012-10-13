@@ -1,0 +1,1 @@
+cmd_/home/fantao/myCODES/drivers/led/led.ko := arm-linux-ld -EL -r  -T /home/fantao/ok6410/linux-3.0.1/scripts/module-common.lds --build-id  -o /home/fantao/myCODES/drivers/led/led.ko /home/fantao/myCODES/drivers/led/led.o /home/fantao/myCODES/drivers/led/led.mod.o
