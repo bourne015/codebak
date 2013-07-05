@@ -1,14 +1,15 @@
-objs := start.o main.o ddr.o clock_init.o uart.o printf.o
-led.bin: $(objs)
-	arm-linux-ld -T led.lds -o led.elf $(objs)
-	arm-linux-objcopy -O binary led.elf led.bin
-	arm-linux-objdump -D led.elf > led.dis
+obj = start.o clock.o ddr.o nand.o main.o test.o uart.o
+CC := arm-linux-gcc
 
-%.o : %.S
-	arm-linux-gcc -c -o $@ $<
+nand.bin:$(obj)
+	arm-linux-ld -Tnand.lds -o nand.elf $^
+	arm-linux-objcopy -O binary -S nand.elf $@
+	arm-linux-objdump -D nand.elf > nand.dis
 
-%.o : %.c
-	arm-linux-gcc -c -o $@ $<
+%.o: %.c
+	$(CC) -c -o $@ $<
+%.o: %.S
+	$(CC) -c -o $@ $<
 
 clean:
-	rm *.o led.elf led.bin led.dis -f
+	-rm -f *.o *.bin *.elf *.dis

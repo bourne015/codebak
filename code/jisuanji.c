@@ -7,6 +7,8 @@
 #include <math.h>
 #include <string.h>
 
+//typedef unsigned long ul;
+
 int type = 0;
 unsigned char data[32];
 int num = 0; //count char number
@@ -65,7 +67,7 @@ void to_ten()
 			to_two(tmp);
 			to_eight(tmp);
 			break;
-		default:
+		defaintt:
 			printf("unknow type!!!\n");
 			break;
 	}

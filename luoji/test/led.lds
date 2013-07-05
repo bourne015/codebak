@@ -1,8 +1,8 @@
 SECTIONS
 {
-	. = 0x50000000;
+	. = 0x51000000;
 	.text : {
-		start.o
+		start.o (.text)
 		* (.text)
 	}
  	

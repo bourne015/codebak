@@ -1,10 +1,13 @@
 ifneq ($(KERNELRELEASE), )
-obj-m := dev_model.o
+obj-m += char2.o
 
 else
-KDIR := /home/fantao/ok6410/linux-3.0.1/
+KVERS = $(shell uname -r)
+#KDIR := /home/fantao/ok6410/linux-3.0.1/
+KDIR := /lib/modules/$(KVERS)/build
+
 all :
-	make -C $(KDIR) M=$(PWD) modules CROSS_COMPILE=arm-linux-
+	make -C $(KDIR) M=$(PWD) modules
 clean :
 	rm -f *.cmd *.ko *.o *.mod.o *.mod.c *.symvers *.order
 endif

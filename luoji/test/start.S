@@ -14,9 +14,9 @@ _start:
 	bl	clock_init
 	/*init the ddr for link_address*/
 	ldr	sp, =8*1024
+	bl	uart_init
 	bl	ddr_init
 
-	/*copy the code to link_address*/
 	adr 	r0, _start
 	ldr 	r1, =_start
 	ldr	r2, =bss_start
@@ -33,13 +33,17 @@ clean_bss:
 	ldr	r0, =bss_start
 	ldr	r1, = bss_end
 	ldr	r2, =0x0
+	cmp	r0, r1
+	beq	on_ram
 clean_loop:
 	str	r2, [r0], #4
 	cmp	r0, r1;
 	bne	clean_loop
 
 	/*test link_address*/
-	#bl	main
-	bl	main
-	bl	test
+on_ram:
+	mov	lr, pc
+	ldr	pc, =main
+	ldr	pc, =main2
+	ldr	pc, =test
 	bl	test2

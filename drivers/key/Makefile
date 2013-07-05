@@ -1,5 +1,5 @@
 ifneq ($(KERNELRELEASE), )
-obj-m := key_led.o
+obj-m += key_led.o
 
 else
 KDIR := /home/fantao/ok6410/linux-3.0.1/

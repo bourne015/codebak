@@ -1,5 +1,5 @@
 ifneq ($(KERNELRELEASE), )
-obj-m := mem.o
+obj-m := s3c_nand.o
 
 else
 KDIR := /home/fantao/ok6410/linux-3.0.1/

@@ -1,29 +1,21 @@
-#define	gpmcon  (*((volatile unsigned long *)0x7F008820))
-#define	gpmdat  (*((volatile unsigned long *)0x7F008824))
+//#include "uart.h"
 
-void dl()
+char inbuf[1024];
+
+void my_printf(char inbuf[])
 {
-	volatile int i = 3000;
-	volatile int j = 3000;
+	int i = 0;
 	
-	for (i = 3000; i >= 0; i--)
-		for (j = 3000; j >= 0; j--);
+	while (inbuf[i])
+		put_char(inbuf[i++]);
 }
 
-int test1()
+void test(void)
 {
-	unsigned long key = 0xe;
-
-	gpmcon &= ~0xffff;
-	gpmcon |= 0x1111;
-	gpmdat = key;
-}
-
-int test2()
-{
-	unsigned long key = 0xc;
-
-	gpmcon &= ~0xffff;
-	gpmcon |= 0x1111;
-	gpmdat = key;
+	int i = 0;
+	char te_buf[20] = "test!!!";
+	
+	while (te_buf[i])
+		put_char(te_buf[i++]);
+	return;
 }

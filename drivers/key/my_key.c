@@ -4,6 +4,7 @@
 #include <linux/init.h>
 #include <linux/delay.h>
 #include <linux/poll.h>
+#include <linux/types.h>
 #include <linux/irq.h>
 #include <asm/irq.h>
 #include <asm/io.h>
@@ -24,6 +25,9 @@
 #include <mach/gpio-bank-m.h>
 
 #define DEVICE_NAME     "buttons"
+
+int key_major = 251;
+struct class *myclass;
 
 struct button_irq_desc {
     int irq;
@@ -166,7 +170,7 @@ static unsigned int s3c64xx_buttons_poll( struct file *file,
     	return mask;
 }
 */
-static struct file_operations dev_fops = {
+static struct file_operations key_fops = {
     	.owner   =   THIS_MODULE,
     	.open    =   s3c64xx_buttons_open,
     	.release =   s3c64xx_buttons_close, 
@@ -174,25 +178,24 @@ static struct file_operations dev_fops = {
 //    	.poll    =   s3c64xx_buttons_poll,
 };
 
-static struct miscdevice misc = {
-	.minor = MISC_DYNAMIC_MINOR,
-	.name = DEVICE_NAME,
-	.fops = &dev_fops,
-};
-
 static int __init dev_init(void)
 {
-	int ret;
+	key_major = register_chrdev(0, "key", &key_fops);
 
-	ret = misc_register(&misc);
-	printk (DEVICE_NAME"\tinitialized\n");
+        myclass = class_create(THIS_MODULE, "dev_key");
+        device_create(myclass, NULL, MKDEV(key_major, 0), NULL, "fkey");
+ 
+	printk (DEVICE_NAME "\tinitialized\n");
 
-	return ret;
+	return 0;
 }
 
 static void __exit dev_exit(void)
 {
-	misc_deregister(&misc);
+	unregister_chrdev(key_major, "key");
+
+	device_destroy(myclass, MKDEV(key_major, 0));
+        class_destroy(myclass);
 }
 
 module_init(dev_init);
