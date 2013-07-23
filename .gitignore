@@ -2,3 +2,6 @@
 *.bin
 *.elf
 *.dis
+*.out
+*.cmd
+*.mod
