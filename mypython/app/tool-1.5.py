@@ -88,8 +88,8 @@ class Frame(wx.Frame):
         sizer.Add(text3, pos=ADDR_LOC, flag=wx.LEFT|wx.TOP, border=10)
         
         self.tc2 = wx.TextCtrl(panel)
-        sizer.Add(self.tc2, pos=ADDR_TEXT_LOC, span=(1, 3), flag=wx.TOP|wx.EXPAND, 
-            border=5)
+        sizer.Add(self.tc2, pos=ADDR_TEXT_LOC, span=(1, 3),
+			flag=wx.TOP|wx.EXPAND, border=5)
 
         text4 = wx.StaticText(panel, label="Size:")
         sizer.Add(text4, pos=SIZE_LOC, flag=wx.TOP|wx.LEFT, border=10)
