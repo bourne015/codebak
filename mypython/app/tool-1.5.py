@@ -35,7 +35,7 @@ SEPARA_LINE_LOC = (6, 0)
 BOX_TEST_LOC    = (7, 0)
 TEST_ITEM_LOC   = (7, 1)
 BUTT_START_LOC  = (7, 4)
-
+    
 class Frame(wx.Frame):
     def __init__(self, parent = None, title = "Tool"):
         wx.Frame.__init__(self, parent = None, title = "Flash Tool",
@@ -106,6 +106,7 @@ class Frame(wx.Frame):
         ##the test command is 'printenv'
         flash_test = wx.Button(panel, label="printenv")
         sizer.Add(flash_test, pos=(5, 4-1))
+        self.Bind(wx.EVT_BUTTON, self.printenv, flash_test)
         ###
         
         line = wx.StaticLine(panel)
@@ -271,12 +272,26 @@ class Frame(wx.Frame):
         #     %(self.file, Address, Size)
 #shoule bind the gauge with real process but not timer
 #just for test
+        f_start = self.tc2.GetValue()
+# there we shoule check the return value before gono
+#        ra=cs.recv(512)
+        f_size = self.tc3.GetValue()
+        s = Configure()
+        sk = s.BuildTcp('null')
+        s.skt.send("nand erase " + f_start + ' '+ f_size)
+        s.skt.send("nand write " + f_start + ' '+ f_size)
         GaugeDia = Configure(None, title = 'Task Process')
         GaugeDia.Ui_Gauge()
         GaugeDia.SetSize((300, 130))
         GaugeDia.ShowModal()
         #GaugeDia.Destroy()
-        
+
+    def printenv(self, a):
+        s = Configure()
+        sk = s.BuildTcp('null')
+        s.skt.send("printenv")
+        return True
+    
 class Configure(wx.Dialog):
     def __init__(self, parent = None,
                  title = "Configure"):
@@ -341,35 +356,40 @@ class Configure(wx.Dialog):
         CloBtn = wx.Button(pan, label='Close')
         sizer.Add(OkBtn, pos = (7, 0),flag=wx.LEFT, border = 45)
         sizer.Add(CloBtn, pos = (7, 1),flag=wx.RIGHT, border = 35)
+        self.Bind(wx.EVT_BUTTON, self.UartOk, OkBtn)
         self.Bind(wx.EVT_BUTTON, self.OnQuit, CloBtn)
         
         sizer.AddGrowableCol(2)
         pan.SetSizer(sizer)
 
+    def UartOk(self, a):
+        #val = self.ch1.GetValue()
+        #print val
+        return True
+        
     def Ui_Tcp(self):
-        DefaultIp = '192.168.1.98'
+        DefaultIp = '192.168.1.182'
+        DefaultPoart = '8007'
         TcpItems = ["Board IP:", "TCP Port:"]
         pan = wx.Panel(self)
         sizer = wx.GridBagSizer(2, 5)
 
         text1 = wx.StaticText(pan, label=TcpItems[0])
         sizer.Add(text1, pos=(0, 0), flag=wx.LEFT | wx.TOP, border=15)
-        
+
         self.con1 = wx.TextCtrl(pan)
         sizer.Add(self.con1, pos = (0, 1), span=(1, 5),
                   flag=wx.TOP, border = 10)
         self.con1.SetValue(DefaultIp)
-        self.BoardIp = self.con1.GetValue()
-        #print BoardIp
-        
+      
         text2 = wx.StaticText(pan, label=TcpItems[1])
         sizer.Add(text2, pos=(1, 0), flag=wx.LEFT | wx.TOP, border=15)
         
         self.con2 = wx.TextCtrl(pan)
         sizer.Add(self.con2, pos = (1, 1), span=(1, 5),
                   flag=wx.TOP, border = 10)
-        self.con2.SetValue("8080")
-        
+        #self.con2.SetValue("8005")
+        self.con2.SetLabel(DefaultPoart)
         OkBtn = wx.Button(pan, label='Ok')
         CloBtn = wx.Button(pan, label='Close')
         sizer.Add(OkBtn, pos = (3, 0),flag=wx.LEFT, border = 65)
@@ -380,14 +400,18 @@ class Configure(wx.Dialog):
         sizer.AddGrowableCol(2)
         pan.SetSizer(sizer)
 
-    def BuildTcp(self,a):
+    def BuildTcp(self, a):
 ###TODO: add error check!!!
-        self.BoardIp = self.con1.GetValue()
-        self.TcpCom = self.con2.GetValue()
+        tmp = Configure()
+        tmp1 = tmp.Ui_Tcp()
+        self.BoardIp = tmp.con1.GetValue()
+        self.TcpPort = tmp.con2.GetValue()
         
-        s=socket.socket()
-        s.connect((self.BoardIp, int(self.TcpCom)))   
-        data=s.recv(512)
+        self.skt = socket.socket()
+        self.skt.connect((self.BoardIp, int(self.TcpPort)))
+###shoule check the return value
+        self.skt.send("found you!")
+        #data=s.recv(512)
         self.Destroy()
         
     def Ui_About(self):
