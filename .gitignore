@@ -3,5 +3,13 @@
 *.elf
 *.dis
 *.out
+
 *.cmd
 *.mod
+*.o.cmd
+*.ko.cmd
+*.ko
+*.mod.o 
+*.mod.c 
+*.symvers 
+*.order
