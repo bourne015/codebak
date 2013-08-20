@@ -10,4 +10,4 @@ uart.bin: start.o main.o uart.o clock.o
 	arm-linux-gcc -o $@ $< -c
 
 clean:
-	rm *.o uart.elf uart.bin uart.dis
+	rm -f *.o uart.elf uart.bin uart.dis
