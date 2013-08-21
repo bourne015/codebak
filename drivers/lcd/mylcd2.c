@@ -43,27 +43,28 @@
 				S3CFB_HBP + S3CFB_HRES) * (S3CFB_VFP +\
 				S3CFB_VSW + S3CFB_VBP + S3CFB_VRES))
 static struct fb_info *fbinfo;
+static unsigned long pseudo_palette[16];
 static volatile unsigned long *gpfcon;
 static volatile unsigned long *gpfdat;
 static volatile unsigned long *gpecon;
 static volatile unsigned long *gpedat;
 static volatile unsigned long *gpicon;
 static volatile unsigned long *gpjcon;
-static unsigned long pseudo_palette[16];
 static volatile unsigned long *MIFPCON;
 static volatile unsigned long *SPCON;
-static volatile unsigned long *VIDCON0;
-static volatile unsigned long *VIDCON1;
-static volatile unsigned long *VIDTCON0;
-static volatile unsigned long *VIDTCON1;
-static volatile unsigned long *VIDTCON2;
-static volatile unsigned long *WINCON0;
-static volatile unsigned long *VIDOSD0A;
-static volatile unsigned long *VIDOSD0B;
-static volatile unsigned long *VIDOSD0C;
-static volatile unsigned long *VIDW00ADD0B0;
-static volatile unsigned long *VIDW00ADD1B0;
-static volatile unsigned long *VIDW00ADD2;
+#define  s3c_lcd_ba	0x77100000
+#define  vidcon0	0x000
+#define  vidcon1	0x004
+#define  vidtcon0	0x010
+#define  vidtcon1	0x014
+#define  vidtcon2	0x018
+#define  wincon0	0x020
+#define  vidosd0a	0x040
+#define  vidosd0b	0x044
+#define  vidosd0c	0x048
+#define  vidw00add0b0	0x0a0
+#define  vidw00add1b0	0x0d0
+#define  vidw00add2	0x100
 
 static int s3c_fb_setcolreg(unsigned int regno, unsigned int red,
 			     unsigned int green, unsigned int blue,
