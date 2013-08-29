@@ -13,3 +13,4 @@
 *.mod.c 
 *.symvers 
 *.order
+*.swp
