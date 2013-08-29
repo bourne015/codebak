@@ -13,7 +13,3 @@
 *.mod.c 
 *.symvers 
 *.order
-tags
-go
-app
-*.swp
