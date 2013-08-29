@@ -14,3 +14,5 @@
 *.symvers 
 *.order
 tags
+go
+app

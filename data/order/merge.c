@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void
-merge(int array[], int left, int right, int rightend)
+merge(int *a, int *array, int left, int right, int rightend)
 {
         int i, leftend, tmp;
         int numele = rightend - left + 1;
@@ -24,15 +24,28 @@ merge(int array[], int left, int right, int rightend)
                 a[rightend] = array[rightend];
 }
 
-void
-msort(int array[], int left, int right)
+void sort(int *a, int *tmp, int left, int right)
 {
         int mid;
         if (left < right) {
                 mid = (left+right)/2;
-                msort(array, left, mid);
-                msort(array, mid+1, right);
-                merge(array, left, mid+1, right);
+                sort(a, tmp, left, mid);
+                sort(a, tmp, mid+1, right);
+                merge(a, tmp, left, mid+1, right);
         }
 }
 
+int msort(int *a, int left, int right)
+{
+	int *tmp;
+
+	tmp = malloc((right + 1) * sizeof (int));
+	if (tmp == NULL) {
+		printf("failed to malloc tmo\n");	
+		return -1;
+	}
+	
+	sort(a, tmp, left, right);
+	
+	return 0;
+}
