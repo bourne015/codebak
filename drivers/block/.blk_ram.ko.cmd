@@ -1,1 +1,0 @@
-cmd_/home/fantao/myCODES/drivers/block/blk_ram.ko := arm-linux-ld -EL -r  -T /home/fantao/ok6410/linux-3.0.1/scripts/module-common.lds --build-id  -o /home/fantao/myCODES/drivers/block/blk_ram.ko /home/fantao/myCODES/drivers/block/blk_ram.o /home/fantao/myCODES/drivers/block/blk_ram.mod.o

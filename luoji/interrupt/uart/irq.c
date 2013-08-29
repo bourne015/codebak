@@ -102,6 +102,7 @@ void do_irq()
 		//clear the interrupt
         	EINT0PEND = 0x3f;
         	VIC0ADDRESS = 0;
+		//VIC0INTENCLEAR |= (0x3);
 	} else if (VIC1IRQSTATUS) {
 		irq_isr = VIC1ADDRESS;
 		irq_isr();
