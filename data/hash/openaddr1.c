@@ -71,7 +71,7 @@ int find_key(const char *key, hash *h)
 		if (pos > h->count)
 			pos -= h->count;
 	}
-
+	
 	return pos;
 }
 
@@ -126,10 +126,19 @@ int main(void)
 			scanf("%s", key);
 			pos = find_key(key, h);
 			p = h->listnode[pos];
-			printf("%s, %d\n", p.data.name, p.data.goal);
+			if (p.info != empty)
+				printf("%s, %d\n", p.data.name, p.data.goal);
+			else
+				printf("can't find %s\n", key);
 			break;
+		case 'q':
+			free(h);
+			return 0;
 		default:
 			break;
 		}
 	}
+
+	free(h);
+	return 0;
 }

@@ -72,7 +72,8 @@ list *find_key(const char *key, hash *h)
 
 	while (p != NULL && strcmp(p->data.name, key) != 0)
 		p = p->next;
-
+	if (p == NULL)
+		printf("can't find this data\n");
 	return p;
 }
 
@@ -135,10 +136,17 @@ int main(void)
 			printf("key: ");
 			scanf("%s", key);
 			p = find_key(key, h);
-			printf("%s, %d\n", p->data.name, p->data.goal);
+			if (p != NULL)
+				printf("%s, %d\n", p->data.name, p->data.goal);
 			break;
+		case 'q':
+			free(h);
+			return 0;
 		default:
 			break;
 		}
 	}
+
+	free(h);
+	return 0;
 }
