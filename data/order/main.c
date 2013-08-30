@@ -10,7 +10,7 @@ int create_data(void)
 
         FILE *fd;
 
-        if ((fd = fopen("in.dat", "w+")) == NULL)
+        if ((fd = fopen("in.dat", "w")) == NULL)
                 return -1;
 
         for (i = 0; i < MAX; i++) {
@@ -31,13 +31,9 @@ int get_data(int *dat)
         if ((fd = fopen("in.dat", "r")) == NULL)
                 return -1;
 
-        printf("\nat first the data is:\n");
-
         for (i = 0; i < MAX; i++) {
                 fscanf(fd, "%d", &dat[i]);
-                printf("%d ", dat[i]);
         }
-        printf("\n\n");
 
         fclose(fd);
         return 0;
@@ -59,19 +55,17 @@ int main(void)
 
 	if (create_data() < 0) {
 		printf("create data error\n");
-		goto err;
+		return -1;
 	}
 	if (get_data(dat) < 0) {
 		printf("get data error\n");
-		goto err;
+		return -1;
 	}
 	
 //	insert(dat);
-	msort(dat, 0, MAX-1);
-//	quick(dat, 0, MAX-1);
+//	msort(dat, 0, MAX-1);
+	quick(dat, 0, MAX-1);
 //	shell(dat);
 	
-	display(dat);
-	err:
-		return -1;
+//	display(dat);
 }
