@@ -15,4 +15,10 @@
 *.symvers 
 *.order
 *.swp
+<<<<<<< .merge_file_RgHEro
 *.symvers
+=======
+tags
+go
+app
+>>>>>>> .merge_file_JOJ36n

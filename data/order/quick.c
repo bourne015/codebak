@@ -1,42 +1,49 @@
 #include <stdio.h>
 
-#define NUM 5
-
-void quick(int a[], int l, int r)
+void swap(int *a, int *b)
 {
-	int  i = l, j = r;
 	int tmp;
 
-	if (l < r) {
-		tmp = a[i];
-		while (i < j) {
-			while (i < j && a[j] > tmp)
-				j--;
-			if (i < j)
-				a[i++] = a[j];
-
-			while (i < j && a[i] < tmp)
-				i++;
-			if (i < j) 
-				a[j--] = a[i];		
-		}
-		a[i] = tmp;
-
-		quick(a, l, i-1);
-		quick(a, i+1, r);
-	}
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
-int main(void)
+int mid3(int *a, int left, int right)
 {
-	int a[] = {5,4,3,2,1};
-	int i = 0;
+	int center = (left + right)/2;
+
+	if (a[left] > a[right])
+		swap(&a[left], &a[right]);
+	if (a[left] > a[center])
+		swap(&a[left], &a[center]);
+	if (a[center] > a[right])
+		swap(&a[center], &a[right]);
+
+	swap(&a[center], &a[right]);
+
+	return a[right];
+}
+
+void quick(int *a, int left, int right)
+{
+	int i = left, j = right-1;
+
+	if (left < right) {
+		int tmp = mid3(a, left, right);
+
+		while (1) {
+			while (a[i] < tmp) i++;
+			while (a[j] > tmp) j--;
+
+			if (i < j)
+				swap(&a[i], &a[j]);
+			else
+				break;
+		}
+		swap(&a[i], &a[right]);
 	
-	quick(a, i, NUM-1);
-
-	for (i =  0; i < NUM; i++)
-		printf("%d ", a[i]);
-	printf("\n");
-
-	return 0;
+		quick(a, left, i);
+		quick(a, i+1, right);
+	}
 }
