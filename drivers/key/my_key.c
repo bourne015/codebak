@@ -183,7 +183,7 @@ static int __init dev_init(void)
 	key_major = register_chrdev(0, "key", &key_fops);
 
         myclass = class_create(THIS_MODULE, "dev_key");
-        device_create(myclass, NULL, MKDEV(key_major, 0), NULL, "fkey");
+        device_create(myclass, NULL, MKDEV(key_major, 0), NULL, "key");
  
 	printk (DEVICE_NAME "\tinitialized\n");
 

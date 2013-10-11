@@ -1,8 +1,8 @@
 ifneq ($(KERNELRELEASE), )
-obj-m += key_led.o
+obj-m += key_poll.o
 
 else
-KDIR := /home/fantao/ok6410/linux-3.0.1/
+KDIR := /home/tao/ok6410/forlinx/linux-3.0.1/
 all :
 	make -C $(KDIR) M=$(PWD) modules CROSS_COMPILE=arm-linux-
 clean :

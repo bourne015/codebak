@@ -5,7 +5,7 @@ int main()
 	FILE *fd;
 	unsigned char key_val;
 
-	fd = fopen("/dev/key_led", "r");
+	fd = fopen("/dev/key", "r");
 	if (fd == NULL) {
 		printf("open err\n");
 		return -1;

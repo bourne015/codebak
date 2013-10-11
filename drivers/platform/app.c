@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	int fd;
 	int val = 1;
 
-	fd = open("/dev/led", O_RDWR);
+	fd = open("/dev/mykey", O_RDWR);
 	if (fd < 0) {
 		printf("open err\n");
 		return -1;

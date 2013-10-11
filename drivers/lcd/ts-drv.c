@@ -17,7 +17,7 @@
 
 #define S3C_TS_BASE 0x7e00b000
 
-static struct s3c_ts_regs {
+typedef struct s3c_ts_regs {
 	volatile unsigned long adccon;
 	volatile unsigned long adctsc;         
 	volatile unsigned long adcdly;          
@@ -27,10 +27,10 @@ static struct s3c_ts_regs {
 	volatile unsigned long adcclrint;
 	volatile unsigned long reserved; 
 	volatile unsigned long adcclrintpndnup;
-};
+} s3c_ts_regs;
 
 //static void __iomem	*ts_base;
-struct s3c_ts_regs *ts_base;
+s3c_ts_regs *ts_base;
 
 static void detect_stylus_up(void)
 {
@@ -100,27 +100,26 @@ static int __init s3c_ts_probe(struct platform_device *pdev)
 	clk_enable(ts_clk);
 
 	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-printk(KERN_ALERT "res_irq = %d\n", res_irq->start);
 	request_irq(res_irq->start, stylus_up_down, IRQF_SAMPLE_RANDOM,
-			"ts", NULL);	
+			"ts-irq", NULL);	
+	printk(KERN_ALERT "res_irq = %d\n", res_irq->start);
+
 	res_adc = platform_get_resource(pdev, IORESOURCE_IRQ, 1);
-printk(KERN_ALERT "res_adc = %d\n", res_adc->start);
 	request_irq(res_adc->start, irq_adc, IRQF_SAMPLE_RANDOM,
-			"ts", NULL);	
+			"ts-adc", NULL);	
+	printk(KERN_ALERT "res_adc = %d\n", res_adc->start);
 	detect_stylus_down();
 
-printk(KERN_ALERT "adccon= %p\n", &(ts_base->adccon));
-printk(KERN_ALERT "adctsc= %p\n", &(ts_base->adctsc));
-printk(KERN_ALERT "adcdat0= %p\n", &(ts_base->adcdat0));
-printk(KERN_ALERT "adcupdn= %p\n", &(ts_base->adcupdn));
 	return 0;
 }
 
-static void s3c_ts_remove(struct platform_device *pdev)
+static int s3c_ts_remove(struct platform_device *pdev)
 {
-	free_irq(res_adc->start, 1);
-	free_irq(res_irq->start, 1);
+	free_irq(res_adc->start, NULL);
+	free_irq(res_irq->start, NULL);
 	iounmap(ts_base);
+
+	return 0;
 }
 
 static struct platform_driver s3c_drv = {
