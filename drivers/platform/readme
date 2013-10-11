@@ -1,0 +1,2 @@
+key.ko: need rebuild kernel:
+uncheck device driver->input device->keyboards->GPIO buttons
