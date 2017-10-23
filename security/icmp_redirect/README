@@ -1,0 +1,5 @@
+attacker:
+run icmpattack.c
+
+victim:
+will be redirect
