@@ -1,0 +1,7 @@
+host A: attacker
+run getpass
+this app will get ftp username and password  
+
+host B: victim
+insmod  nfsniff.ko; then ftp host B
+this module will get ftp username and password
