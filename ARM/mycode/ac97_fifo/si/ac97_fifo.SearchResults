@@ -1,3 +1,0 @@
----- read_cmd Matches (2 in 1 files) ----
-Main.c:unsigned short read_cmd(unsigned char);
-Main.c:unsigned short read_cmd(unsigned char addr)
